@@ -1,0 +1,27 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Log in to Docker Hub
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag shyamyado/demok8s002:latest
+
+    - name: Push the Docker image
+      run: docker push shyamyado/demok8s002:latest
