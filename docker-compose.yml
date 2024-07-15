@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  demok8s002:
+    image: demok8s002
+    build:
+      context: .
+      dockerfile: ./Dockerfile
